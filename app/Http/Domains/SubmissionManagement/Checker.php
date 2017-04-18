@@ -21,7 +21,8 @@ class Checker {
 			}
 			
 			// complier 
-			$cmd = "python ".$mainFileName.$cmdInput." 2>&1; echo $?;"; 
+			//$cmd = "python ".$mainFileName.$cmdInput." 2>&1; echo $?;"; 
+			$cmd = "python ".$mainFileName.$cmdInput." 2>&1;"; 
 			$output = shell_exec($cmd);
 
 			// delete file 
@@ -41,8 +42,8 @@ class Checker {
 		$checker = new Checker();
 		$result = $checker->complie($lang, $sourceCode, $input);
 		$result = trim(preg_replace('/\s+/', ' ', $result));
-
-		return $result == $output ? true : false;
+		
+		return ($result == $output) ? true : false;
 	}
 
 	private function createFile($fileName, $content)

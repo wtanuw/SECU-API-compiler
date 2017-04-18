@@ -54,5 +54,33 @@ class ExampleController extends Controller
         return $this->respond(Response::HTTP_OK, $output);
     }
 
+    public function compile1(Request $request)
+    {   
+        $lang = 'python';
+        $sourceCode = "
+friends = ['john', 'pat', 'gary', 'michael']
+for i, name in enumerate(friends):
+    print 'iteration {iteration} is {name}'.format(iteration=i, name=name)";
+
+        $output = Checker::complie($lang, 
+                                   $sourceCode, 
+                                   $request->input('input'));
+
+        return $this->respond(Response::HTTP_OK, $output);
+    }
+
+    public function testCase1(Request $request)
+    {   
+        $lang = 'python';
+        $sourceCode = "print 'Hello, world!'";
+
+        $output = Checker::checkTestCase($lang, 
+                                         $sourceCode, 
+                                         $request->input('input'), 
+                                         $request->input('output'));
+
+        return $this->respond(Response::HTTP_OK, $output);
+    }
+
 
 }
