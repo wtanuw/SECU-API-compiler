@@ -7,10 +7,29 @@ use Illuminate\Http\Response;
 use Auth;
 use App\Http\Domains\SubmissionManagement\Checker;
 
-/*
-test
+/**
+*source code
+* str = "foo";
+*   for char in str:
+*   print char
+*
+*result
+* f
+* o
+* o
+*
+*source code
+* lst = ["abra", 2038, "cadabra"]
+* for elem in lst:
+*   print elem
+*
+*result
+* abra
+* 2038
+* cadabra
 */
-class PythonTest1Controller extends Controller
+
+class PythonTest2Controller extends Controller
 {
     /**
      * Create a new controller instance.
@@ -24,40 +43,110 @@ class PythonTest1Controller extends Controller
     
     $lang = 'python';
     $sourceCode = "
-friends = ['john', 'pat', 'gary', 'michael']
-for i, name in enumerate(friends):
-    print 'iteration {iteration} is {name}'.format(iteration=i, name=name)";
+str = 'foo';
+for char in str:
+    print char
+";
+    $sourceCode2 = "
+lst = ['abra', 2038, 'cadabra']
+for elem in lst:
+    print elem
+";
     
-    public function compile(String $sourceCode)
+    public function compileRequest(Request $request)
+    {
+        $result = compile();
+        
+        return $this->respond(Response::HTTP_OK, $result);
+    }
+    
+    public function runRequest(Request $request)
+    {
+        $case = $request->input['case'];
+        if ($case == '1') {
+            $result = run_1();
+        } else  if ($case == '2') {
+            $result = run_2();
+        }
+        
+        return $this->respond(Response::HTTP_OK, $result);
+    }
+    
+    public function testCaseRequest(Request $request)
+    {
+        $case = $request->input['case'];
+        if ($case == '1') {
+            $result = testCase_1();
+        } else if ($case == '2') {
+            $result = testCase_2();
+        }
+        
+        return $this->respond(Response::HTTP_OK, $result);
+    }
+    
+    private function compile(String $sourceCode)
     {
         $result = Checker::complie($this->lang, 
                                    $sourceCode, 
                                    "");
 
-        return $this->respond(Response::HTTP_OK, $result);
+        return $result;
     }
-    public function testCase(String $sourceCode, String $input, String $output)
+    
+    private function run(String $sourceCode, String $input)
+    {
+        $result = Checker::complie($this->lang, 
+                                   $sourceCode, 
+                                   $input);
+
+        return $result;
+    }
+    
+    private function testCase(String $sourceCode, String $input, String $output)
     {
         $result = Checker::checkTestCase($this->lang 
                                          $sourceCode, 
                                          $input, 
                                          $output;
 
-        return $this->respond(Response::HTTP_OK, $result);
+        return $result;
     }
     
-    public function compile_1(Request $request)
+    private function run_1()
     {
-      return compile($sourceCode);
+        $input = '';
+        $result = run($this->sourceCode, $input);
+        
+        return $result;
     }
-    public function testCase_1_1(Request $request)
+    
+    private function testCase_1()
     {
-      $input = '';
-      $output = 'Hello, world!';
-      return testCase($this->sourceCode, $input, $output);
+        $input = '';
+        $output = 'f
+o
+o';
+        $result = testCase($this->sourceCode, $input, $output);
+        
+        return $result;
     }
-    public function testCase_1_2(Request $request)
+    
+    private function run_2()
     {
-      return testCase(input, output);
+        $input = '';
+        $result = run($this->sourceCode2, $input);
+        
+        return $result;
+    }
+    
+    private function testCase_2()
+    {
+        $input = '';
+        $output = 'abra
+2038
+cadabra';
+        $result = testCase($this->sourceCode2, $input, $output);
+        
+        return $result;
     }
 }
