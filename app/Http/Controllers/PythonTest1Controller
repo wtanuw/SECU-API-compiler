@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Auth;
+use App\Http\Domains\SubmissionManagement\Checker;
+
+class PythonTest1Controller extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+    
+    $lang = 'python';
+    $sourceCode = "print 'Hello, world!'";
+    
+    public function compile(String $sourceCode)
+    {
+        $result = Checker::complie($this->lang, 
+                                   $sourceCode, 
+                                   "");
+
+        return $this->respond(Response::HTTP_OK, $result);
+    }
+    public function testCase(String $sourceCode, String $input, String $output)
+    {
+        $result = Checker::checkTestCase($this->lang 
+                                         $sourceCode, 
+                                         $input, 
+                                         $output;
+
+        return $this->respond(Response::HTTP_OK, $result);
+    }
+    
+    public function compile_1(Request $request)
+    {
+      return compile($sourceCode);
+    }
+    public function testCase_1_1(Request $request)
+    {
+      $input = '';
+      $output = 'Hello, world!';
+      return testCase($this->sourceCode, $input, $output);
+    }
+    public function testCase_1_2(Request $request)
+    {
+      return testCase(input, output);
+    }
+}
