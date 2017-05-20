@@ -50,6 +50,10 @@ $app->post('login','AuthController@postLogin');
     $app->post('python7/testcase','PythonTest7Controller@testCaseRequest');
     $app->post('python7/score','PythonTest7Controller@testCaseScoreRequest');
 
+    $app->post('python8/compile','PythonTest8Controller@compileRequest');
+    $app->post('python8/run','PythonTest8Controller@runRequest');
+    $app->post('python8/testcase','PythonTest8Controller@testCaseRequest');
+
     $app->post('update','ExampleController@update');
 
 $app->group([

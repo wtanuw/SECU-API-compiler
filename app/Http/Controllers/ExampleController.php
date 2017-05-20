@@ -82,5 +82,38 @@ for i, name in enumerate(friends):
         return $this->respond(Response::HTTP_OK, $output);
     }
 
+    public function update(Request $request)
+    {   
+        $lang = 'python';
+        $sourceCode = "print 'Hello, world!'";
 
+        $output = $this->fncUpdateResult(1, 
+                                         2, 
+                                         3, 
+                                         4, 
+                                         4, 
+                                         "message");
+
+        return $this->respond(Response::HTTP_OK, $output);
+    }
+
+    public function fncUpdateResult($user_id, $question_id, $script, $result, $score, $message){
+    $objStudentAnswer = Answer::updateOrCreate(
+    ['user_id' => $user_id,
+    'question_id' => $question_id],
+    ['script' => $script,
+    'result' => $result,
+    'score' => $score,
+    'message' => $message]
+    );
+    $objStudentAnswer->save();
+    
+    
+    $result = App\StudentAnswer::where('user_id', $user_id)
+  ->where('question_id', $question_id)
+  ->update(['result' => $result, 'score' => $score, 'message' => $message]);
+
+
+    return response()->json(["result"=>$result,"message"=>$message]);
+    }
 }
