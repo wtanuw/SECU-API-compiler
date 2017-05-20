@@ -9,27 +9,13 @@ use App\Http\Domains\SubmissionManagement\Checker;
 
 /**
 *source code
-* str = "foo";
-*   for char in str:
-*   print char
+* print "Hello, World!"
 *
 *result
-* f
-* o
-* o
-*
-*source code
-* lst = ["abra", 2038, "cadabra"]
-* for elem in lst:
-*   print elem
-*
-*result
-* abra
-* 2038
-* cadabra
+* Hello, World!
 */
 
-class PythonTest2Controller extends Controller
+class PythonTest1Controller extends Controller
 {
     /**
      * Create a new controller instance.
@@ -41,32 +27,21 @@ class PythonTest2Controller extends Controller
         //
     }
     
-    $lang = 'python';
-    $sourceCode = "
-str = 'foo';
-for char in str:
-    print char
-";
-    $sourceCode2 = "
-lst = ['abra', 2038, 'cadabra']
-for elem in lst:
-    print elem
-";
+    private $lang = 'python';
+    private $sourceCode = "print 'Hello, world!'";
     
     public function compileRequest(Request $request)
     {
-        $result = compile();
-        
+        $result = $this->compile($this->sourceCode);
+
         return $this->respond(Response::HTTP_OK, $result);
     }
     
     public function runRequest(Request $request)
     {
-        $case = $request->input['case'];
+        $case = $request->input('case');
         if ($case == '1') {
-            $result = run_1();
-        } else  if ($case == '2') {
-            $result = run_2();
+            $result = $this->run_1();
         }
         
         return $this->respond(Response::HTTP_OK, $result);
@@ -74,11 +49,9 @@ for elem in lst:
     
     public function testCaseRequest(Request $request)
     {
-        $case = $request->input['case'];
+        $case = $request->input('case');
         if ($case == '1') {
-            $result = testCase_1();
-        } else if ($case == '2') {
-            $result = testCase_2();
+            $result = $this->testCase_1();
         }
         
         return $this->respond(Response::HTTP_OK, $result);
@@ -104,10 +77,10 @@ for elem in lst:
     
     private function testCase(String $sourceCode, String $input, String $output)
     {
-        $result = Checker::checkTestCase($this->lang 
+        $result = Checker::checkTestCase($this->lang, 
                                          $sourceCode, 
                                          $input, 
-                                         $output;
+                                         $output);
 
         return $result;
     }
@@ -115,7 +88,7 @@ for elem in lst:
     private function run_1()
     {
         $input = '';
-        $result = run($this->sourceCode, $input);
+        $result = $this->run($this->sourceCode, $input);
         
         return $result;
     }
@@ -123,29 +96,8 @@ for elem in lst:
     private function testCase_1()
     {
         $input = '';
-        $output = 'f
-o
-o';
-        $result = testCase($this->sourceCode, $input, $output);
-        
-        return $result;
-    }
-    
-    private function run_2()
-    {
-        $input = '';
-        $result = run($this->sourceCode2, $input);
-        
-        return $result;
-    }
-    
-    private function testCase_2()
-    {
-        $input = '';
-        $output = 'abra
-2038
-cadabra';
-        $result = testCase($this->sourceCode2, $input, $output);
+        $output = 'Hello, world!';
+        $result = $this->testCase($this->sourceCode, $input, $output);
         
         return $result;
     }

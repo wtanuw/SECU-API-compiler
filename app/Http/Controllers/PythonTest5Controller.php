@@ -9,17 +9,24 @@ use App\Http\Domains\SubmissionManagement\Checker;
 
 /**
 *source code
-* def hello (what):
-*     text = "Hello, " + what + "!"
-*     print text
+* def quadcube (x):
+*     return x**2, x**3
 * 
-* hello ("World")
-*
+* a, b = quadcube(3)
+* print a
 *result
-* Hello, World!
+* 9
+*source code
+* def quadcube (x):
+*     return x**2, x**3
+* 
+* a, b = quadcube(3)
+* print b
+*result
+* 27
 */
 
-class PythonTest2Controller extends Controller
+class PythonTest5Controller extends Controller
 {
     /**
      * Create a new controller instance.
@@ -31,26 +38,36 @@ class PythonTest2Controller extends Controller
         //
     }
     
-    $lang = 'python';
-    $sourceCode = "
-def hello (what):
-    text = 'Hello, ' + what + '!'
-    print text
-    
-hello ('World')";
+    private $lang = 'python';
+    private $sourceCode = "
+def quadcube (x):
+  return x**2, x**3
+  
+a, b = quadcube(3)
+print a
+";
+    private $sourceCode2 = "
+def quadcube (x):
+  return x**2, x**3
+  
+a, b = quadcube(3)
+print b
+";
     
     public function compileRequest(Request $request)
     {
-        $result = compile();
+        $result = $this->compile();
         
         return $this->respond(Response::HTTP_OK, $result);
     }
     
     public function runRequest(Request $request)
     {
-        $case = $request->input['case'];
+        $case = $request->input('case');
         if ($case == '1') {
-            $result = run_1();
+            $result = $this->run_1();
+        } else if ($case == '2') {
+            $result = $this->run_2();
         }
         
         return $this->respond(Response::HTTP_OK, $result);
@@ -58,9 +75,11 @@ hello ('World')";
     
     public function testCaseRequest(Request $request)
     {
-        $case = $request->input['case'];
+        $case = $request->input('case');
         if ($case == '1') {
-            $result = testCase_1();
+            $result = $this->testCase_1();
+        } else if ($case == '2') {
+            $result = $this->testCase_2();
         }
         
         return $this->respond(Response::HTTP_OK, $result);
@@ -86,10 +105,10 @@ hello ('World')";
     
     private function testCase(String $sourceCode, String $input, String $output)
     {
-        $result = Checker::checkTestCase($this->lang 
+        $result = Checker::checkTestCase($this->lang, 
                                          $sourceCode, 
                                          $input, 
-                                         $output;
+                                         $output);
 
         return $result;
     }
@@ -97,7 +116,7 @@ hello ('World')";
     private function run_1()
     {
         $input = '';
-        $result = run($this->sourceCode, $input, $output);
+        $result = $this->run($this->sourceCode, $input);
         
         return $result;
     }
@@ -105,8 +124,25 @@ hello ('World')";
     private function testCase_1()
     {
         $input = '';
-        $output = 'Hello, world!';
-        $result = testCase($this->sourceCode, $input, $output);
+        $output = '9';
+        $result = $this->testCase($this->sourceCode, $input, $output);
+        
+        return $result;
+    }
+    
+    private function run_2()
+    {
+        $input = '';
+        $result = $this->run($this->sourceCode, $input);
+        
+        return $result;
+    }
+    
+    private function testCase_2()
+    {
+        $input = '';
+        $output = '27';
+        $result = $this->testCase($this->sourceCode, $input, $output);
         
         return $result;
     }

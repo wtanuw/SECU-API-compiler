@@ -12,7 +12,7 @@
 */
 
 $app->get('/', function() use ($app) {
-    return "RESTful API for education management system in SDD term project";
+    return "compile RESTful API for education management system in SDD term project";
 });
 
 // register
@@ -20,6 +20,37 @@ $app->post('user', 'UserController@add');
 
 // Authen
 $app->post('login','AuthController@postLogin');
+
+    $app->post('python1/compile','PythonTest1Controller@compileRequest');
+    $app->post('python1/run','PythonTest1Controller@runRequest');
+    $app->post('python1/testcase','PythonTest1Controller@testCaseRequest');
+
+    $app->post('python2/compile','PythonTest2Controller@compileRequest');
+    $app->post('python2/run','PythonTest2Controller@runRequest');
+    $app->post('python2/testcase','PythonTest2Controller@testCaseRequest');
+
+    $app->post('python3/compile','PythonTest3Controller@compileRequest');
+    $app->post('python3/run','PythonTest3Controller@runRequest');
+    $app->post('python3/testcase','PythonTest3Controller@testCaseRequest');
+
+    $app->post('python4/compile','PythonTest4Controller@compileRequest');
+    $app->post('python4/run','PythonTest4Controller@runRequest');
+    $app->post('python4/testcase','PythonTest4Controller@testCaseRequest');
+
+    $app->post('python5/compile','PythonTest5Controller@compileRequest');
+    $app->post('python5/run','PythonTest5Controller@runRequest');
+    $app->post('python5/testcase','PythonTest5Controller@testCaseRequest');
+
+    $app->post('python6/compile','PythonTest6Controller@compileRequest');
+    $app->post('python6/run','PythonTest6Controller@runRequest');
+    $app->post('python6/testcase','PythonTest6Controller@testCaseRequest');
+
+    $app->post('python7/compile','PythonTest7Controller@compileRequest');
+    $app->post('python7/run','PythonTest7Controller@runRequest');
+    $app->post('python7/testcase','PythonTest7Controller@testCaseRequest');
+    $app->post('python7/score','PythonTest7Controller@testCaseScoreRequest');
+
+    $app->post('update','ExampleController@update');
 
 $app->group([
     'prefix' => '',
@@ -38,10 +69,10 @@ $app->group([
     /**
      * Routes All Example
      */
-    $app->post('complie','ExampleController@complie'); // ถ้า implement แล้วก็ ลบได้เลยนะครับ
+    $app->post('compile','ExampleController@complie'); // ถ้า implement แล้วก็ ลบได้เลยนะครับ
     $app->post('checkTestCase','ExampleController@checkTestCase'); // ถ้า implement แล้วก็ ลบได้เลยนะครับ
     $app->post('compile1','ExampleController@compile1'); 
-    $app->post('testCase1','ExampleController@testCase1'); 
+    $app->post('testCase1','ExampleController@testCase1');
     /**
      * Routes for resource course
      */

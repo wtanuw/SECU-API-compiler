@@ -9,13 +9,27 @@ use App\Http\Domains\SubmissionManagement\Checker;
 
 /**
 *source code
-* print "Hello, World!"
+* str = "foo";
+*   for char in str:
+*   print char
 *
 *result
-* Hello, World!
+* f
+* o
+* o
+*
+*source code
+* lst = ["abra", 2038, "cadabra"]
+* for elem in lst:
+*   print elem
+*
+*result
+* abra
+* 2038
+* cadabra
 */
 
-class PythonTest1Controller extends Controller
+class PythonTest3Controller extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,8 +41,17 @@ class PythonTest1Controller extends Controller
         //
     }
     
-    $lang = 'python';
-    $sourceCode = "print 'Hello, world!'";
+    private $lang = 'python';
+    private $sourceCode = "
+str = 'foo';
+for char in str:
+    print char
+";
+    private $sourceCode2 = "
+lst = ['abra', 2038, 'cadabra']
+for elem in lst:
+    print elem
+";
     
     public function compileRequest(Request $request)
     {
@@ -39,9 +62,11 @@ class PythonTest1Controller extends Controller
     
     public function runRequest(Request $request)
     {
-        $case = $request->input['case'];
+        $case = $request->input('case');
         if ($case == '1') {
-            $result = run_1();
+            $result = $this->run_1();
+        } else  if ($case == '2') {
+            $result = $this->run_2();
         }
         
         return $this->respond(Response::HTTP_OK, $result);
@@ -49,9 +74,11 @@ class PythonTest1Controller extends Controller
     
     public function testCaseRequest(Request $request)
     {
-        $case = $request->input['case'];
+        $case = $request->input('case');
         if ($case == '1') {
-            $result = testCase_1();
+            $result = $this->testCase_1();
+        } else if ($case == '2') {
+            $result = $this->testCase_2();
         }
         
         return $this->respond(Response::HTTP_OK, $result);
@@ -77,10 +104,10 @@ class PythonTest1Controller extends Controller
     
     private function testCase(String $sourceCode, String $input, String $output)
     {
-        $result = Checker::checkTestCase($this->lang 
+        $result = Checker::checkTestCase($this->lang, 
                                          $sourceCode, 
                                          $input, 
-                                         $output;
+                                         $output);
 
         return $result;
     }
@@ -88,7 +115,7 @@ class PythonTest1Controller extends Controller
     private function run_1()
     {
         $input = '';
-        $result = run($this->sourceCode, $input, $output);
+        $result = $this->run($this->sourceCode, $input);
         
         return $result;
     }
@@ -96,8 +123,29 @@ class PythonTest1Controller extends Controller
     private function testCase_1()
     {
         $input = '';
-        $output = 'Hello, world!';
-        $result = testCase($this->sourceCode, $input, $output);
+        $output = 'f
+o
+o';
+        $result = $this->testCase($this->sourceCode, $input, $output);
+        
+        return $result;
+    }
+    
+    private function run_2()
+    {
+        $input = '';
+        $result = $this->run($this->sourceCode2, $input);
+        
+        return $result;
+    }
+    
+    private function testCase_2()
+    {
+        $input = '';
+        $output = 'abra
+2038
+cadabra';
+        $result = $this->testCase($this->sourceCode2, $input, $output);
         
         return $result;
     }

@@ -36,14 +36,14 @@ class PythonTest4Controller extends Controller
         //
     }
     
-    $lang = 'python';
-    $sourceCode = "
+    private $lang = 'python';
+    private $sourceCode = "
 def iterquad ():
-  for i in range(5):
-  yield (i*i)
+    for i in range(5):
+        yield (i*i)
 
 for j in iterquad():
-  print j
+    print j
 ";
     
     public function compileRequest(Request $request)
@@ -55,9 +55,9 @@ for j in iterquad():
     
     public function runRequest(Request $request)
     {
-        $case = $request->input['case'];
+        $case = $request->input('case');
         if ($case == '1') {
-            $result = run_1();
+            $result = $this->run_1();
         }
         
         return $this->respond(Response::HTTP_OK, $result);
@@ -65,9 +65,9 @@ for j in iterquad():
     
     public function testCaseRequest(Request $request)
     {
-        $case = $request->input['case'];
+        $case = $request->input('case');
         if ($case == '1') {
-            $result = testCase_1();
+            $result = $this->testCase_1();
         }
         
         return $this->respond(Response::HTTP_OK, $result);
@@ -93,10 +93,10 @@ for j in iterquad():
     
     private function testCase(String $sourceCode, String $input, String $output)
     {
-        $result = Checker::checkTestCase($this->lang 
+        $result = Checker::checkTestCase($this->lang, 
                                          $sourceCode, 
                                          $input, 
-                                         $output;
+                                         $output);
 
         return $result;
     }
@@ -104,7 +104,7 @@ for j in iterquad():
     private function run_1()
     {
         $input = '';
-        $result = run($this->sourceCode, $input);
+        $result = $this->run($this->sourceCode, $input);
         
         return $result;
     }
@@ -117,7 +117,7 @@ for j in iterquad():
 4
 9
 16';
-        $result = testCase($this->sourceCode, $input, $output);
+        $result = $this->testCase($this->sourceCode, $input, $output);
         
         return $result;
     }
