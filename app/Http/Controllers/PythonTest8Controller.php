@@ -52,19 +52,17 @@ def is_palindrome(word):
 
 try:
     input = raw_input()
+    print is_palindrome(str(input))
 except :
     print 'error.'
-finally:
-    print is_palindrome(str(input))
 ";
 
     private $sourceCode2 = "
 try:
     input = raw_input()
+    print str(input)==str(input)[::-1]
 except :
     print 'error.'
-finally:
-    print str(input)==str(input)[::-1]
 ";
 
     private $sourceCode3 = "
@@ -78,10 +76,9 @@ def isPalindrome(S):
     return pali
 try:
     input = raw_input()
+    print isPalindrome(input)
 except :
     print 'error.'
-finally:
-    print isPalindrome(input)
 ";
     
     public function compileRequest(Request $request)
